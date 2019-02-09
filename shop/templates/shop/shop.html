@@ -1,0 +1,35 @@
+{% extends "shop/shop-base.html" %}
+{% load static %}
+{% block ext %}
+	<!-- Items for sale -->
+	<div class="w-100 m-0 p-3 all-items">
+		{% for group in items %}
+			{% if group %}
+			<div class="w-100 m-2 p-4 category-box">
+				<h2>{{ group.0.category.title }}</h2>
+				<hr>
+				<div class='w-100 m-1 items'>
+				{% for item in group %}
+					<div class="card" style="min-width: 20rem;">
+					  <img class="card-img-top" src="" alt="Card image cap">
+					  <div class="card-body">
+					    <h6 class="card-title">{{item}}</h6>
+					    <h6 class="price">Rs. {{item.price}}</h6>
+
+					    <p class="p-1 card-text">
+					    	{{ item.description }}
+					    </p>
+					    <div class="button-row">
+						    <a href="#" class="btn item-button buy-button">BUY</a>
+						    <a href="#" class="btn item-button cart-button">ADD TO CART</a>
+					    </div>
+					  </div>
+					</div>
+				{% endfor %}
+				</div>
+			</div>
+			{% endif %}
+		{% endfor %}
+	</div>
+
+{% endblock %}

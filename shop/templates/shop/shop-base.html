@@ -1,0 +1,88 @@
+{% extends "shop/base.html" %}
+{% load static %}
+{% block content %}
+  <!-- starter template for bootstrap -->
+  
+  <!-- bootstrap navbar -->
+  <nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="{% url 'landing-page' %}">Groceries</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="{% url 'shop-home' id=0 %}">Home <span class="sr-only">(current)</span></a>
+        </li>
+        {% if order != None %}
+        <li class="nav-item active dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Category
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            {% for group in groups %}
+            <a class="dropdown-item"
+              href="{% url 'shop-home' id=group.id order=order %}">
+                {{ group.title }}
+              </a>
+            {% endfor %}
+            <!-- ---------------------- -->
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="{% url 'shop-home' id=0 order=order%}">All</a>
+          </div>
+        </li>
+        {% endif %}
+        {% if category != None %}
+        <li class="nav-item active dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Sort
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item"
+              href="{% url 'shop-home' id=category order='price_lo_hi' %}">
+                Price: Low to High
+            </a>
+            <a class="dropdown-item" href="{% url 'shop-home' id=category order='price_hi_lo' %}">Price: High to Low</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="{% url 'shop-home' id=0 %}">Clear filter</a>
+          </div>
+        </li>
+        {% endif %}
+        {% if user.is_staff %}
+          <li class="nav-item">
+            <a class="nav-link active" href="{% url 'item-create' %}">Add Item</a>
+          </li>
+        {% endif %}
+      </ul>
+      {% if user.is_authenticated %}
+      <div class="mr-2 dropdown show">
+      <a class="btn btn-dark dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      {{user.username}}
+      </a>
+
+      <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+      <a class="dropdown-item" href="{% url 'user-profile' %}">Profile</a>
+      <a class="dropdown-item" href="#">Orders</a>
+      <div class="dropdown-divider"></div>
+      <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
+      </div>
+    </div>
+      <a class="mr-2 btn btn-info my-2 my-sm-0" href="#">
+      <svg id='cart-symbol' width="16" height="16" viewBox="0 0 16 15" xmlns="http://www.w3.org/2000/svg"><path class="" d="M15.32 2.405H4.887C3 2.405 2.46.805 2.46.805L2.257.21C2.208.085 2.083 0 1.946 0H.336C.1 0-.064.24.024.46l.644 1.945L3.11 9.767c.047.137.175.23.32.23h8.418l-.493 1.958H3.768l.002.003c-.017 0-.033-.003-.05-.003-1.06 0-1.92.86-1.92 1.92s.86 1.92 1.92 1.92c.99 0 1.805-.75 1.91-1.712l5.55.076c.12.922.91 1.636 1.867 1.636 1.04 0 1.885-.844 1.885-1.885 0-.866-.584-1.593-1.38-1.814l2.423-8.832c.12-.433-.206-.86-.655-.86" fill="#fff"></path></svg>
+       Cart
+      <span class="badge badge-light">0</span>
+    </a>
+      {% else %}
+      <a class="mr-2 btn btn-info my-2 my-sm-0" href="{% url 'login' %}">Login</a>
+      <a class="mr-2 btn btn-info my-2 my-sm-0" href="{% url 'register' %}">Register</a>
+      {% endif %}
+    </div>
+  </nav>
+
+  <!-- Items for sale -->
+  {% block ext %}
+  {% endblock %}
+
+
+{% endblock %}

@@ -1,0 +1,37 @@
+{% extends "shop/base.html" %}
+{% load static %}
+{% block content %}
+	<!-- starter template for bootstrap -->
+	<div class="m-0 jumbotron">
+		<div class="w-50 p-4 info">
+			<h1 class="display-4">Groceries at IIT Dharwad</h1>
+			<br>
+			<h2 class="display-5">One stop solution for groceries</h2>
+			<br>
+			<a class="btn btn-outline-secondary" href="{% url 'shop-home' id=0 %}" role="button">
+				Shop
+			</a>
+		</div>
+	</div>
+	<div class="p-5 container">
+		<center>
+			<h2>Choose from a variety of groups to shop from</h2>
+			<hr>
+		</center>
+	</div>
+	<div class="m-0 p-0 all-groups">
+		{% for group in groups %}
+		<div class="m-2 p-0 group">
+			<div class="m-0 p-0 translucent">
+			</div>
+			<h1 class="group-name">{{ group }}</h1>
+			<br>
+			<a href="{% url 'shop-home' id=group.id %}" class="btn btn-outline-secondary">Shop
+			</a>	
+			
+		</div>
+		{% endfor %}
+
+	</div>
+	
+{% endblock %}

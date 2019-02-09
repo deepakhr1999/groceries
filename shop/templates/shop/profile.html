@@ -1,0 +1,189 @@
+{% extends "shop/shop-base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block ext %}
+	<div class="body">
+		{% if messages %}
+			{% for message in messages %}
+			<div class="alert alert-{{ message.tags }}">
+				{{ message }}
+			</div>
+			{% endfor %}
+		{% endif %}
+	<!-- Profile information and address -->
+	<div class="d-flex flex-wrap justify-content-start">
+		<div id="profile" class="p-2 profile card">
+			<div class="card-body">
+				<h2 class="card-title">Profile</h2>
+				<table id='profile' class="table">
+					<tr>
+					  <th scope="row">Name</th>
+					  <td>{{user.username}}</td>
+					</tr>
+					<tr>
+					  <th scope="row">Email</th>
+					  <td>{{user.email}}</td>
+					</tr>
+					<tr>
+					  <th scope="row">Phone#</th>
+					  <td>{{user.profile.phone_number}}</td>
+					</tr>
+					<tr>
+					  <th scope="row">Hostel</th>
+					  <td>#{{user.profile.hostel_number}} {{user.profile.hostel_name}} Hostel </td>
+					</tr>
+					<tr>
+					  <th scope="row">Employment</th>
+					  <td>{{user.profile.get_employment_display}}</td>
+					</tr>
+
+				</table>
+			</div>
+		</div>
+
+		<div id="address" class="flex-column align-items-start">
+			<div class="card" style="width: 18rem; margin: 20px 20px 0px 20px;">
+			  <div class="card-body">
+			    <h5 class="card-title">Address</h5>
+			    <hr>
+			    <p class="card-text">
+			    	<h6>{{ user.username }}</h6>
+			    	#{{user.profile.hostel_number}} {{user.profile.hostel_name}} Hostel <br>
+			    	IIT Dharwad<br>
+			    	Belur Industrial Area<br>
+			    	Dharwad, 580011
+			    </p>
+			  </div>
+			</div>
+			<div class="card" style="width: 18rem;">
+			  <div class="card-body">
+			    <p class="card-text">
+			    	Want to change something?
+			    </p>
+			    <a onclick="displayForm()" id='edit-profile' class="card-link">Edit Profile</a>
+			    <a onclick="displayForm()" id='edit-address' class="card-link">Edit Address</a>
+			  </div>
+			</div>
+		</div>
+
+		<div id="user-list" class="card" style="width: 18rem;">
+		  <div class="card-body">
+		    <h5 class="card-title">The List</h5>
+		    <h6 class="card-subtitle mb-2 text-muted">Add what you wish to have at the store</h6>
+		    <div class="input-group">
+			  <textarea id="list" class="form-control" aria-label="With textarea"></textarea>
+			</div>
+			<br>
+		    <a href="#" class="card-link">Card link</a>
+		    <a href="#" class="card-link">Another link</a>
+		  </div>
+		</div>
+
+		<div id="profileUpdateForm" class="card" style="display: none;">
+		  <div class="card-body">
+		    <h5 class="card-title">Update Profile</h5>
+		    <form method="POST">
+		    	{% csrf_token %}
+		    	{{ form|crispy }}
+		    	<button class="btn btn-info">Update</button>
+		    </form>
+		  </div>
+		</div>
+
+	</div>
+
+	<!-- Recent Orders by date -->
+	<div class="orders">
+		<h2>Order History</h2>
+		<hr>
+		<div class="w-100 d-flex">
+			<!-- These are the orders placed by the user till now -->
+			<div class="card" style="width: 25rem">
+			  <div class="card-body">
+			    <h5 class="card-title">Groceries</h5>
+			    <h6 class="card-subtitle mb-2 text-muted">Bought: yesterday</h6>
+			    <table class="table">
+			    	<tr>
+			    		<th>Item</th>
+			    		<th>Quantity</th>
+			    		<th>Price</th>
+			    		<th>Total</th>
+			    	</tr>
+			    	<tr>
+			    		<td>Alphanso Mango</td>
+			    		<td>2</td>
+			    		<td>120</td>
+			    		<td>240</td>
+			    	</tr>
+			    	<tr>
+			    		<td>Oreo</td>
+			    		<td>5</td>
+			    		<td>30</td>
+			    		<td>150</td>
+			    	</tr>
+			    	<tr>
+			    		<th>Total</th>
+			    		<td></td>
+			    		<td></td>
+			    		<td>390</td>
+			    	</tr>
+			    </table>
+			  </div>
+			</div>
+			<!-- ======================================= -->
+			<div class="card" style="width: 25rem">
+			  <div class="card-body">
+			    <h5 class="card-title">Groceries</h5>
+			    <h6 class="card-subtitle mb-2 text-muted">Bought: 2 days ago</h6>
+			    <table class="table">
+			    	<tr>
+			    		<th>Item</th>
+			    		<th>Quantity</th>
+			    		<th>Price</th>
+			    		<th>Total</th>
+			    	</tr>
+			    	<tr>
+			    		<td>Classmate Notebook</td>
+			    		<td>2</td>
+			    		<td>40</td>
+			    		<td>80</td>
+			    	</tr>
+			    	<tr>
+			    		<td>Dark Fantasy</td>
+			    		<td>5</td>
+			    		<td>30</td>
+			    		<td>150</td>
+			    	</tr>
+			    	<tr>
+			    		<th>Total</th>
+			    		<td></td>
+			    		<td></td>
+			    		<td>230</td>
+			    	</tr>
+			    </table>
+			  </div>
+			</div>
+			<!-- ----------------------------------------------------------------- -->
+		</div>
+	</div>	<!-- End of orders -->
+
+	</div>		<!-- End of body -->
+	<script type="text/javascript">
+		// first time flag is hidden, no use of hacking this tho
+		document.getElementById("id_first_time").checked = "";
+		document.getElementById("div_id_first_time").style.display = 'none';
+
+
+		function displayForm(){
+			document.getElementById("profile").style.display = "none";
+			document.getElementById("user-list").style.display = "none";
+			document.getElementById("address").style.display = "none";
+
+			var anim = "animation-name: fadeOutLeft; animation-duration: 1s;"
+
+			var form = document.getElementById("profileUpdateForm");
+			form.style.display = "flex";
+			form.style="animation-name: fadeInRight; animation-duration: 0.7s; animation-fill-mode: forwards;"
+		}
+	</script>
+{% endblock %}
